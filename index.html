@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neon Devlog</title>
+  <meta name="description" content="A cyberpunk-flavored GitHub personal homepage." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <canvas id="matrix-bg" aria-hidden="true"></canvas>
+  <div class="bg-noise" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a href="#home" class="brand">&lt;neon.dev/&gt;</a>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#repos">Repos</a>
+      <a href="#blog">Blog</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="home">
+    <section class="hero reveal">
+      <p class="eyebrow">GITHUB PAGES / PERSONAL SITE</p>
+      <h1 class="glitch" data-text="YOUR_NAME">YOUR_NAME</h1>
+      <p id="typed-line" class="typed-line"></p>
+      <div class="hero-actions">
+        <a id="github-link" class="btn btn-primary" href="#" target="_blank" rel="noreferrer">Open GitHub</a>
+        <a class="btn btn-ghost" href="#repos">See My Code</a>
+      </div>
+    </section>
+
+    <section id="about" class="panel reveal">
+      <h2>About</h2>
+      <p>
+        Builder of high-performance products, terminal-first workflows, and clean systems.
+        I like shipping quickly, measuring everything, and making interfaces that feel alive.
+      </p>
+      <div class="chip-grid">
+        <span class="chip">Objective-C</span>
+        <span class="chip">Swift</span>
+        <span class="chip">TypeScript</span>
+        <span class="chip">AI Agents</span>
+        <span class="chip">System Design</span>
+        <span class="chip">Realtime Apps</span>
+      </div>
+    </section>
+
+    <section class="split reveal">
+      <div class="panel terminal">
+        <h2>Now Building</h2>
+        <pre><code>$ stack --today
+> ai-coding-workflows
+> ios-performance-tooling
+> realtime-social-products
+> docs-that-engineers-love
+
+$ status
+> shipping in public
+> reading source code
+> automating the boring parts</code></pre>
+      </div>
+      <div class="panel">
+        <h2>Quick Stats</h2>
+        <ul class="stats">
+          <li><strong id="repo-count">--</strong><span>Public Repos</span></li>
+          <li><strong id="star-count">--</strong><span>Total Stars</span></li>
+          <li><strong id="follower-count">--</strong><span>Followers</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="repos" class="panel reveal">
+      <div class="section-head">
+        <h2>Featured Repositories</h2>
+        <a id="all-repos-link" href="#" target="_blank" rel="noreferrer">View all</a>
+      </div>
+      <div id="repo-grid" class="repo-grid">
+        <p class="placeholder">Loading repositories...</p>
+      </div>
+    </section>
+
+    <section id="blog" class="panel reveal">
+      <h2>博客工作台</h2>
+      <p>使用 GitHub Issues 作为博客数据源。给 Issue 加上 <code>blog-post</code> 标签即可发布。</p>
+
+      <div class="blog-toolbar">
+        <input id="github-token" type="password" placeholder="GitHub Token（repo 权限；用于直接发布/编辑/删除，可选）" />
+        <button class="btn btn-ghost" type="button" id="save-token">保存 Token</button>
+        <button class="btn btn-ghost" type="button" id="sync-posts">同步文章</button>
+      </div>
+      <p id="blog-status" class="blog-status">正在从 GitHub Issues 加载文章...</p>
+
+      <form id="post-form" class="post-form">
+        <input type="hidden" id="post-id" />
+        <div class="form-row">
+          <label for="post-title">标题</label>
+          <input id="post-title" name="title" type="text" maxlength="120" placeholder="例如：开发周报 #12" required />
+        </div>
+        <div class="form-row split-row">
+          <div>
+            <label for="post-date">发布日期</label>
+            <input id="post-date" name="date" type="date" required />
+          </div>
+          <div>
+            <label for="post-tags">标签（英文逗号分隔）</label>
+            <input id="post-tags" name="tags" type="text" maxlength="120" placeholder="AI, iOS, 工具链" />
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="post-excerpt">摘要</label>
+          <textarea id="post-excerpt" name="excerpt" rows="2" maxlength="220" placeholder="显示在文章卡片中的简介。" required></textarea>
+        </div>
+        <div class="form-row">
+          <label for="post-content">正文（支持换行）</label>
+          <textarea id="post-content" name="content" rows="8" placeholder="在这里写你的文章..." required></textarea>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit" id="post-submit">发布文章</button>
+          <button class="btn btn-ghost" type="button" id="post-cancel" hidden>取消编辑</button>
+        </div>
+      </form>
+
+      <div id="blog-grid" class="blog-grid">
+        <p class="placeholder">正在加载文章...</p>
+      </div>
+
+      <article id="post-reader" class="reader" hidden>
+        <p id="reader-date" class="blog-date"></p>
+        <h3 id="reader-title"></h3>
+        <p id="reader-tags" class="reader-tags"></p>
+        <div id="reader-content" class="reader-content"></div>
+      </article>
+    </section>
+  </main>
+
+  <footer id="contact" class="footer reveal">
+    <p>Connect with me</p>
+    <div class="links">
+      <a id="contact-github" href="#" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="mailto:hello@example.com">Email</a>
+      <a href="https://x.com/" target="_blank" rel="noreferrer">X / Twitter</a>
+    </div>
+    <small>© <span id="year"></span> Neon Devlog</small>
+  </footer>
+
+  <script src="./script.js"></script>
+</body>
+</html>
