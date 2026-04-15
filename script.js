@@ -2,55 +2,44 @@ const SITE_CONFIG = {
   username: "Jacky-LinPeng",
   displayName: "Jacky LinPeng",
   typedTexts: [
-    "Shipping code at terminal speed.",
-    "Building AI-native products.",
-    "Designing tools developers enjoy."
+    "追求技术深度，也重视工程取舍",
+    "关注性能、稳定性与可维护性",
+    "Keep it simple, solve real problems"
   ]
 };
 
 const SIGNAL_ITEMS = [
   {
     id: "alpha",
-    kicker: "MODE / BUILD",
-    title: "Neon Workflow Engine",
-    copy: "A terminal-first release flow that compresses idea-to-merge time with tiny, reliable loops.",
-    tags: ["Automation", "Velocity", "DX"]
+    kicker: "SCENE / VISUAL",
+    title: "Hero Motion Deck",
+    copy: "三端设备叠层、漂浮动画和 3D 倾斜反馈，让首页第一屏更像产品发布会。",
+    tags: ["Animation", "3D Tilt", "Landing"]
   },
   {
     id: "beta",
-    kicker: "MODE / SYSTEM",
-    title: "Realtime Product Backbone",
-    copy: "An event-driven architecture for social and collaboration features under high concurrency.",
-    tags: ["Realtime", "Scalability", "Reliability"]
+    kicker: "SCENE / CODE",
+    title: "Live Repo Feed",
+    copy: "直接读取 GitHub API 展示仓库、Stars 与关注数据，静态页面也有实时感。",
+    tags: ["GitHub API", "Data", "Stats"]
   },
   {
     id: "gamma",
-    kicker: "MODE / EXPERIENCE",
-    title: "Developer UX Lab",
-    copy: "Internal platforms with polished interactions so engineering teams can ship fast without friction.",
-    tags: ["Developer Tools", "Design", "Product"]
+    kicker: "SCENE / DEVICE",
+    title: "Responsive Stage",
+    copy: "同一套视觉语言覆盖电脑、平板和手机，移动端依然保持层次和冲击力。",
+    tags: ["Responsive", "Mobile", "UX"]
   }
 ];
 
 function bindProfileLinks() {
   const profileUrl = `https://github.com/${SITE_CONFIG.username}`;
-  const links = [
-    document.getElementById("github-link"),
-    document.getElementById("all-repos-link"),
-    document.getElementById("contact-github")
-  ];
-
-  links.forEach((link) => {
+  ["github-link", "all-repos-link", "contact-github"].forEach((id) => {
+    const link = document.getElementById(id);
     if (link) {
       link.href = profileUrl;
     }
   });
-
-  const title = document.querySelector(".glitch");
-  if (title) {
-    title.textContent = SITE_CONFIG.displayName;
-    title.setAttribute("data-text", SITE_CONFIG.displayName);
-  }
 }
 
 function runTypedEffect() {
@@ -67,19 +56,19 @@ function runTypedEffect() {
 
     if (!deleting && charIndex < phrase.length) {
       charIndex += 1;
-      setTimeout(tick, 55);
+      setTimeout(tick, 52);
       return;
     }
 
     if (!deleting && charIndex === phrase.length) {
       deleting = true;
-      setTimeout(tick, 1100);
+      setTimeout(tick, 1200);
       return;
     }
 
     if (deleting && charIndex > 0) {
       charIndex -= 1;
-      setTimeout(tick, 30);
+      setTimeout(tick, 28);
       return;
     }
 
@@ -100,7 +89,6 @@ async function fetchGitHubData() {
     if (!userRes.ok || !repoRes.ok) {
       throw new Error("Failed to fetch GitHub data.");
     }
-
     const user = await userRes.json();
     const repos = await repoRes.json();
     renderStats(user, repos);
@@ -114,13 +102,13 @@ function animateNumber(id, target) {
   const node = document.getElementById(id);
   if (!node) return;
 
-  const duration = 850;
   const start = performance.now();
+  const duration = 820;
 
   function frame(now) {
     const progress = Math.min((now - start) / duration, 1);
-    const value = Math.floor(target * (1 - Math.pow(1 - progress, 3)));
-    node.textContent = String(value);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    node.textContent = String(Math.floor(target * eased));
     if (progress < 1) {
       requestAnimationFrame(frame);
     }
@@ -130,9 +118,9 @@ function animateNumber(id, target) {
 }
 
 function renderStats(user, repos) {
-  const totalStars = repos.reduce((sum, repo) => sum + (repo.stargazers_count || 0), 0);
+  const stars = repos.reduce((sum, repo) => sum + (repo.stargazers_count || 0), 0);
   animateNumber("repo-count", user.public_repos ?? 0);
-  animateNumber("star-count", totalStars);
+  animateNumber("star-count", stars);
   animateNumber("follower-count", user.followers ?? 0);
 }
 
@@ -146,7 +134,7 @@ function renderRepos(repos) {
     .slice(0, 6);
 
   if (!featured.length) {
-    grid.innerHTML = "<p class='placeholder'>No public repositories yet.</p>";
+    grid.innerHTML = "<p class='placeholder'>暂无公开仓库。</p>";
     return;
   }
 
@@ -170,7 +158,7 @@ function renderRepos(repos) {
 function renderRepoError() {
   const grid = document.getElementById("repo-grid");
   if (!grid) return;
-  grid.innerHTML = "<p class='placeholder'>Unable to load repositories. Check SITE_CONFIG.username.</p>";
+  grid.innerHTML = "<p class='placeholder'>仓库加载失败，请检查用户名配置。</p>";
 }
 
 function renderSignalCards() {
@@ -178,8 +166,8 @@ function renderSignalCards() {
   if (!grid) return;
 
   grid.innerHTML = SIGNAL_ITEMS.map(
-    (item, index) => `
-      <button class="signal-card ${index === 0 ? "active" : ""}" data-id="${item.id}" type="button">
+    (item, idx) => `
+      <button class="signal-card ${idx === 0 ? "active" : ""}" data-id="${item.id}" type="button">
         <p>${item.kicker}</p>
         <h3>${item.title}</h3>
       </button>`
@@ -199,7 +187,7 @@ function renderSignalStage(item) {
   }
 }
 
-function setupShowcaseInteraction() {
+function setupSignalInteraction() {
   const grid = document.getElementById("signal-grid");
   if (!grid) return;
 
@@ -207,23 +195,12 @@ function setupShowcaseInteraction() {
     const card = event.target.closest(".signal-card");
     if (!card) return;
 
-    const id = card.dataset.id;
-    const item = SIGNAL_ITEMS.find((it) => it.id === id);
+    const item = SIGNAL_ITEMS.find((it) => it.id === card.dataset.id);
     if (!item) return;
 
     grid.querySelectorAll(".signal-card").forEach((node) => node.classList.remove("active"));
     card.classList.add("active");
     renderSignalStage(item);
-  });
-}
-
-function setupCursorGlow() {
-  const glow = document.getElementById("cursor-glow");
-  if (!glow) return;
-
-  window.addEventListener("mousemove", (event) => {
-    glow.style.left = `${event.clientX}px`;
-    glow.style.top = `${event.clientY}px`;
   });
 }
 
@@ -245,6 +222,47 @@ function enableTiltCards() {
   });
 }
 
+function setupRevealAnimation() {
+  const items = document.querySelectorAll(".reveal");
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+
+  items.forEach((item) => observer.observe(item));
+}
+
+function setupParallaxStage() {
+  const stage = document.getElementById("device-stage");
+  if (!stage) return;
+
+  stage.addEventListener("mousemove", (event) => {
+    const rect = stage.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+    const laptop = stage.querySelector(".laptop");
+    const tablet = stage.querySelector(".tablet");
+    const phone = stage.querySelector(".phone");
+
+    if (laptop) laptop.style.transform = `translate(${x * 8}px, ${y * 8}px)`;
+    if (tablet) tablet.style.transform = `translate(${x * 14}px, ${y * 14}px)`;
+    if (phone) phone.style.transform = `translate(${x * 18}px, ${y * 18}px)`;
+  });
+
+  stage.addEventListener("mouseleave", () => {
+    stage.querySelectorAll(".device").forEach((node) => {
+      node.style.transform = "translate(0, 0)";
+    });
+  });
+}
+
 function setText(id, value) {
   const node = document.getElementById(id);
   if (node) {
@@ -261,78 +279,16 @@ function escapeHtml(text) {
     .replaceAll("'", "&#039;");
 }
 
-function setupRevealAnimation() {
-  const items = document.querySelectorAll(".reveal");
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in");
-        }
-      });
-    },
-    { threshold: 0.1 }
-  );
-  items.forEach((item) => observer.observe(item));
-}
-
-function startMatrixBackground() {
-  const canvas = document.getElementById("matrix-bg");
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
-
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-
-  resize();
-  window.addEventListener("resize", resize);
-
-  const glyphs = "01<>[]{}#$%&*+-=".split("");
-  const fontSize = 14;
-  let columns = Math.floor(canvas.width / fontSize);
-  let rain = Array(columns).fill(0);
-
-  function frame() {
-    ctx.fillStyle = "rgba(4, 8, 13, 0.08)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#3df0b2";
-    ctx.font = `${fontSize}px IBM Plex Mono`;
-
-    if (columns !== Math.floor(canvas.width / fontSize)) {
-      columns = Math.floor(canvas.width / fontSize);
-      rain = Array(columns).fill(0);
-    }
-
-    for (let i = 0; i < rain.length; i += 1) {
-      const glyph = glyphs[Math.floor(Math.random() * glyphs.length)];
-      const x = i * fontSize;
-      const y = rain[i] * fontSize;
-      ctx.fillText(glyph, x, y);
-      if (y > canvas.height && Math.random() > 0.975) {
-        rain[i] = 0;
-      } else {
-        rain[i] += 1;
-      }
-    }
-    requestAnimationFrame(frame);
-  }
-
-  frame();
-}
-
 function setupBaseUI() {
   setText("year", String(new Date().getFullYear()));
   bindProfileLinks();
   runTypedEffect();
   setupRevealAnimation();
-  startMatrixBackground();
-  setupCursorGlow();
+  setupParallaxStage();
   renderSignalCards();
-  setupShowcaseInteraction();
+  setupSignalInteraction();
   fetchGitHubData();
+  enableTiltCards();
 }
 
 setupBaseUI();

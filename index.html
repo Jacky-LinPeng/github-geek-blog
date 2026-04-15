@@ -1,100 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Neon Devlog</title>
-  <meta name="description" content="A cyberpunk-flavored GitHub personal homepage." />
+  <title>Jacky LinPeng | Cool Blog</title>
+  <meta name="description" content="一个酷炫、动效丰富的个人博客静态页面。" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <canvas id="matrix-bg" aria-hidden="true"></canvas>
-  <div class="bg-noise" aria-hidden="true"></div>
-  <div id="cursor-glow" class="cursor-glow" aria-hidden="true"></div>
+  <div class="bg-layer" aria-hidden="true">
+    <span class="orb orb-a"></span>
+    <span class="orb orb-b"></span>
+    <span class="orb orb-c"></span>
+  </div>
 
   <header class="topbar">
-    <a href="#home" class="brand">&lt;neon.dev/&gt;</a>
+    <a class="brand" href="#top">JACKY / BLOG</a>
     <nav>
-      <a href="#about">About</a>
-      <a href="#repos">Repos</a>
-      <a href="#showcase">Showcase</a>
-      <a href="#contact">Contact</a>
+      <a href="#repos">项目</a>
+      <a href="#lab">实验室</a>
+      <a href="#contact">联系</a>
     </nav>
   </header>
 
-  <main id="home">
+  <main id="top">
     <section class="hero reveal">
-      <p class="eyebrow">GITHUB PAGES / INTERACTIVE STATIC SITE</p>
-      <h1 class="glitch" data-text="YOUR_NAME">YOUR_NAME</h1>
-      <p id="typed-line" class="typed-line"></p>
-      <div class="hero-actions">
-        <a id="github-link" class="btn btn-primary" href="#" target="_blank" rel="noreferrer">Open GitHub</a>
-        <a class="btn btn-ghost" href="#showcase">Enter Showcase</a>
+      <div class="hero-copy">
+        <p class="eyebrow">BUILD WITH FOCUS · KEEP IT SIMPLE</p>
+        <h1 class="title">专注，Keep It Simple Stupid</h1>
+        <p id="typed-line" class="typed-line"></p>
+        <div class="hero-actions">
+          <a id="github-link" class="btn btn-primary" href="#" target="_blank" rel="noreferrer">访问 GitHub</a>
+          <a class="btn btn-ghost" href="#repos">仓库</a>
+        </div>
       </div>
-      <div class="hero-orbits" aria-hidden="true">
-        <span></span><span></span><span></span>
-      </div>
-    </section>
 
-    <section id="about" class="panel reveal">
-      <h2>About</h2>
-      <p>
-        Builder of high-performance products, terminal-first workflows, and clean systems.
-        I like shipping quickly, measuring everything, and making interfaces that feel alive.
-      </p>
-      <div class="chip-grid">
-        <span class="chip">Objective-C</span>
-        <span class="chip">Swift</span>
-        <span class="chip">TypeScript</span>
-        <span class="chip">AI Agents</span>
-        <span class="chip">System Design</span>
-        <span class="chip">Realtime Apps</span>
-      </div>
-    </section>
+      <div class="device-stage" id="device-stage">
+        <article class="device laptop tilt-card">
+          <div class="bezel"></div>
+          <div class="screen smoke"></div>
+          <p class="device-label">DESKTOP VIEW</p>
+        </article>
 
-    <section class="split reveal">
-      <div class="panel terminal">
-        <h2>Now Building</h2>
-        <pre><code>$ stack --today
-> ai-coding-workflows
-> ios-performance-tooling
-> realtime-social-products
-> docs-that-engineers-love
+        <article class="device tablet tilt-card">
+          <div class="bezel"></div>
+          <div class="screen panel-ui"></div>
+          <p class="device-label">TABLET VIEW</p>
+        </article>
 
-$ status
-> shipping in public
-> reading source code
-> automating the boring parts</code></pre>
-      </div>
-      <div class="panel">
-        <h2>Quick Stats</h2>
-        <ul class="stats">
-          <li><strong id="repo-count">--</strong><span>Public Repos</span></li>
-          <li><strong id="star-count">--</strong><span>Total Stars</span></li>
-          <li><strong id="follower-count">--</strong><span>Followers</span></li>
-        </ul>
+        <article class="device phone tilt-card">
+          <div class="bezel"></div>
+          <div class="screen timeline-ui"></div>
+          <p class="device-label">MOBILE VIEW</p>
+        </article>
       </div>
     </section>
 
     <section id="repos" class="panel reveal">
       <div class="section-head">
-        <h2>Featured Repositories</h2>
-        <a id="all-repos-link" href="#" target="_blank" rel="noreferrer">View all</a>
+        <h2>精选仓库</h2>
+        <a id="all-repos-link" href="#" target="_blank" rel="noreferrer">查看全部</a>
       </div>
+      <ul class="stats">
+        <li><strong id="repo-count">--</strong><span>公开仓库</span></li>
+        <li><strong id="star-count">--</strong><span>累计 Stars</span></li>
+        <li><strong id="follower-count">--</strong><span>关注者</span></li>
+      </ul>
       <div id="repo-grid" class="repo-grid">
-        <p class="placeholder">Loading repositories...</p>
+        <p class="placeholder">正在加载仓库...</p>
       </div>
     </section>
 
-    <section id="showcase" class="panel reveal">
-      <h2>Signal Showcase</h2>
-      <p>A static interactive scene. Click a signal card to project details.</p>
+    <section id="lab" class="panel reveal">
+      <h2>交互实验室</h2>
+      <p>点击下面的模式卡片，右侧会切换不同展示态。</p>
       <div class="showcase-wrap">
         <div id="signal-grid" class="signal-grid"></div>
-        <article id="signal-stage" class="signal-stage">
+        <article class="signal-stage">
           <p id="signal-kicker" class="signal-kicker"></p>
           <h3 id="signal-title"></h3>
           <p id="signal-copy"></p>
@@ -105,13 +90,13 @@ $ status
   </main>
 
   <footer id="contact" class="footer reveal">
-    <p>Connect with me</p>
+    <p>Connect</p>
     <div class="links">
       <a id="contact-github" href="#" target="_blank" rel="noreferrer">GitHub</a>
       <a href="mailto:hello@example.com">Email</a>
       <a href="https://x.com/" target="_blank" rel="noreferrer">X / Twitter</a>
     </div>
-    <small>© <span id="year"></span> Neon Devlog</small>
+    <small>© <span id="year"></span> Jacky LinPeng</small>
   </footer>
 
   <script src="./script.js"></script>
